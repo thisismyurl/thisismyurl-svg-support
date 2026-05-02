@@ -1,5 +1,8 @@
 # SVG Support by This Is My URL
 
+[![CI](https://github.com/thisismyurl/thisismyurl-svg-support/actions/workflows/ci.yml/badge.svg)](https://github.com/thisismyurl/thisismyurl-svg-support/actions/workflows/ci.yml) [![WordPress Tested](https://img.shields.io/badge/WordPress-6.9%2B-blue)](https://wordpress.org/) [![License](https://img.shields.io/badge/License-GPL--2.0-blue)](LICENSE)
+
+
 Adds safe SVG upload support to WordPress with server-side sanitization, role-based upload controls, and full Media Library compatibility.
 
 WordPress blocks SVG uploads by default because SVGs can contain executable code. This plugin enables SVG support while applying sanitization to remove unsafe elements before the file is stored.
