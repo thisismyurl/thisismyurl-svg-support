@@ -5,8 +5,8 @@
  * Plugin Name: SVG Support by thisismyurl.com
  * Plugin URI:  https://thisismyurl.com/thisismyurl-svg-support/
  * Donate link: https://thisismyurl.com/donate/
- * Description: Safely enable SVG uploads and management in the WordPress Media Library.
- * Version:     0.6112
+ * Description: Safely enable SVG uploads and management in the WordPress Media Library, with on-upload XSS sanitization.
+ * Version:     0.6122
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Update URI: https://github.com/thisismyurl/thisismyurl-svg-support
@@ -24,11 +24,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+require_once __DIR__ . '/class-svg-sanitizer.php';
+
 class TIMU_SVG_Support {
 
 	public function __construct() {
 
 		add_filter( 'upload_mimes', array( $this, 'add_svg_mime_types' ) );
+		add_filter( 'wp_check_filetype_and_ext', array( $this, 'check_svg_filetype_and_ext' ), 10, 4 );
+		add_filter( 'wp_handle_upload_prefilter', array( $this, 'sanitize_svg_on_upload' ) );
 		add_action( 'admin_head', array( $this, 'fix_svg_media_library_display' ) );
 		add_action( 'admin_init', array( $this, 'register_svg_settings' ) );
 		add_action( 'admin_menu', array( $this, 'create_svg_tools_page' ) );
@@ -36,6 +40,35 @@ class TIMU_SVG_Support {
 
 		// Hook to set defaults only when the plugin is first activated.
 		register_activation_hook( __FILE__, array( $this, 'activate_plugin_defaults' ) );
+	}
+
+	public function check_svg_filetype_and_ext( $data, $file, $filename, $mimes ) {
+		if ( ! empty( $data['type'] ) ) {
+			return $data;
+		}
+		$ext = strtolower( pathinfo( $filename, PATHINFO_EXTENSION ) );
+		if ( 'svg' === $ext ) {
+			$data['type'] = 'image/svg+xml';
+			$data['ext']  = 'svg';
+		} elseif ( 'svgz' === $ext ) {
+			$data['type'] = 'image/svg+xml';
+			$data['ext']  = 'svgz';
+		}
+		return $data;
+	}
+
+	public function sanitize_svg_on_upload( $file ) {
+		if ( empty( $file['tmp_name'] ) || empty( $file['name'] ) ) {
+			return $file;
+		}
+		$ext = strtolower( pathinfo( $file['name'], PATHINFO_EXTENSION ) );
+		if ( 'svg' !== $ext && 'svgz' !== $ext ) {
+			return $file;
+		}
+		if ( ! TIMU_SVG_Sanitizer::sanitize_file( $file['tmp_name'] ) ) {
+			$file['error'] = esc_html__( 'SVG upload rejected: failed sanitization. The file may contain script, event handlers, or other unsafe content.', 'thisismyurl-svg-support' );
+		}
+		return $file;
 	}
 
 	/**

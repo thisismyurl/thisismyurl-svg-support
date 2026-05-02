@@ -54,7 +54,7 @@ If you find them helpful, here are some genuine ways to support the work:
 
 - **Sponsor if it fits your budget:** You can sponsor the project through [GitHub Sponsors](https://github.com/sponsors/thisismyurl). Sponsorship helps, but it's always optional.
 - **Contribute code or ideas:** Opening a pull request, reporting an issue, or testing edge cases is just as valuable as sponsorship. Helping me improve these plugins is a great way to contribute.
-- **Share your experience:** A review on [my Google My Business profile]([Add your Google Business Profile URL here]) or a follow on [WordPress.org](https://profiles.wordpress.org/thisismyurl/), [GitHub](https://github.com/thisismyurl), or [LinkedIn](https://linkedin.com/in/thisismyurl) helps others find this work.
+- **Share your experience:** A follow on [WordPress.org](https://profiles.wordpress.org/thisismyurl/), [GitHub](https://github.com/thisismyurl), or [LinkedIn](https://linkedin.com/in/thisismyurl) helps others find this work.
 
 ### Report Issues and Questions
 
@@ -82,11 +82,11 @@ I review PRs thoughtfully and appreciate well-tested contributions. Contributing
 
 This plugin supports the work I do at [This Is My URL](https://thisismyurl.com/wordpress-website-development/), where I help WordPress teams build secure, performant, and maintainable sites.
 
-This plugin is built and maintained by [This Is My URL](https://thisismyurl.com/), a WordPress development and technical SEO practice. I'm Christopher Ross, a WordPress developer and technical SEO specialist with 25+ years of experience in software development, training, and digital learning.
+This plugin is built and maintained by [This Is My URL](https://thisismyurl.com/), a WordPress development and technical SEO practice. I'm Christopher Ross, a WordPress developer and technical SEO specialist with 30 years of experience on the open web (since 1996) and 19 years on WordPress (since 2007).
 
 ### My Background
 
-- **25+ years** in software development, technical training, and digital systems design
+- **30 years on the open web** (since 1996), with 19 of those years on WordPress (since 2007)
 - **WordPress contributor since 2007** with a strong track record helping organizations build practical, maintainable web systems
 - **Technical SEO practitioner** helping sites improve performance, security, and search visibility
 - **Training specialist** focused on practical outcomes and helping teams adopt technology with confidence
