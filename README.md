@@ -9,17 +9,17 @@ WordPress blocks SVG uploads by default because SVGs can contain executable code
 
 ## Features
 
-- **Safe SVG uploads:** Enables `.svg` file uploads with server-side sanitization.
-- **Role-based controls:** Restrict SVG uploads to trusted user roles only (administrators, editors).
-- **SVG sanitization:** Strips potentially harmful scripts and attributes before saving.
-- **Media Library compatibility:** SVGs appear correctly in the WordPress Media Library with preview support.
-- **Inline rendering support:** Option to render SVGs inline for CSS/animation control.
-- **No external dependencies:** All sanitization runs locally.
+- **Safe SVG uploads:** Enables `.svg` and `.svgz` file uploads with allowlist-based server-side sanitization via [enshrined/svg-sanitize](https://github.com/darylldoyle/svg-sanitizer).
+- **Per-role upload allowlist:** Configure which roles can upload SVGs from `Settings > SVG Support`. Backed by a real `upload_svg_files` capability, granted only to roles you check.
+- **MIME validation:** Server-side `finfo_file()` check rejects disguised payloads before sanitization runs.
+- **Sandboxed admin preview:** Media Library previews render in `<iframe sandbox="">`, so script execution and cookie exfil from a pre-sanitization or edge-case payload are denied at the iframe boundary.
+- **Sanitization-failure log:** Last 50 rejection events recorded with filename, reason, user, and IP for incident response.
+- **Bundled sanitizer:** `enshrined/svg-sanitize` is shipped in `vendor/` — no Composer step required to install.
 
 ## Requirements
 
 - WordPress 6.0+
-- PHP 7.4+
+- PHP 8.1+
 
 ## Installation
 
@@ -29,13 +29,16 @@ WordPress blocks SVG uploads by default because SVGs can contain executable code
 
 ## Security Notes
 
-SVG files are sanitized on upload using an allowlist approach: only known-safe elements and attributes are preserved. Scripts, event handlers, and external references are stripped before the file is stored.
+SVG files are sanitized on upload using an allowlist approach (`enshrined/svg-sanitize`): only known-safe elements and attributes are preserved. Scripts, event handlers, and external references are stripped before the file is stored.
 
-Upload capability is restricted to the roles you configure — by default, only administrators.
+Upload capability is gated by the new `upload_svg_files` capability. Roles you check on the settings screen receive that capability; roles you uncheck have it revoked. By default only Administrators are on the allowlist.
+
+For the full threat model and reporting process, see [SECURITY.md](SECURITY.md).
 
 ## Versioning
 
-This plugin uses the format `1.Yddd`:
+This plugin uses the format `x.Yddd`:
+- `x` = release class (`0` = pre-release, `1` = full)
 - `Y` = last digit of the year
 - `ddd` = Julian day number
 

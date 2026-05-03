@@ -1,0 +1,27 @@
+version: 2
+updates:
+  # Composer — bundled vendor/ deps. enshrined/svg-sanitize especially.
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "agent:release-engineer"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+
+  # GitHub Actions — keep CI workflow actions current.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "ci"
+    commit-message:
+      prefix: "ci"

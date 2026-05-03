@@ -1,0 +1,9 @@
+# Default owner for everything in this repo.
+* @thisismyurl
+
+# Security policy + sanitizer require explicit review.
+/SECURITY.md @thisismyurl
+/class-svg-sanitizer.php @thisismyurl
+/composer.json @thisismyurl
+/composer.lock @thisismyurl
+/vendor/ @thisismyurl

@@ -3,30 +3,32 @@ Contributors: thisismyurl
 Tags: svg, media library, sanitization, uploads, security
 Requires at least: 6.0
 Tested up to: 6.9
-Requires PHP: 7.4
-Stable tag: 1.6365
+Requires PHP: 8.1
+Stable tag: 0.6123
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Plugin URI: https://thisismyurl.com/thisismyurl-svg-support/
 Author: This Is My URL
 Author URI: https://thisismyurl.com/
 
-Safe SVG uploads for WordPress with sanitization, role controls, and Media Library compatibility.
+Safe SVG uploads for WordPress with allowlist sanitization (enshrined/svg-sanitize), MIME validation, per-role permissions, and a sandboxed admin preview.
 
 == Description ==
 
-SVG Support enables secure SVG upload workflows in WordPress while reducing risk from unsafe markup.
+SVG Support enables secure SVG upload workflows in WordPress with hardened defaults.
 
 = Key features =
 
-* Enables `.svg` uploads for trusted roles
-* Sanitizes uploaded SVGs with an allowlist approach
-* Removes potentially dangerous scripts/attributes
-* Preserves Media Library compatibility and editor workflows
+* Enables `.svg` and `.svgz` uploads for trusted roles only
+* Allowlist sanitization via the well-vetted [enshrined/svg-sanitize](https://github.com/darylldoyle/svg-sanitizer) library
+* Server-side MIME validation with `finfo_file()` before sanitization runs
+* Per-role upload allowlist configurable from Settings > SVG Support
+* Sandboxed iframe preview in the Media Library (no cookie/JS exfil surface)
+* Sanitization-failure log (last 50 events) for incident response
 
 = Practical benefits =
 
-* Lets teams use lightweight, scalable graphics
+* Lets teams use lightweight, scalable graphics safely
 * Keeps branding assets crisp across devices
 * Improves workflow consistency for design and content teams
 
@@ -48,50 +50,37 @@ Built by This Is My URL, a WordPress development and technical SEO practice.
 == Frequently Asked Questions ==
 
 = Why does WordPress block SVG uploads by default? =
-SVG can contain executable code. This plugin adds sanitization and permission controls.
+SVG can contain executable code (script, event handlers, foreign objects). This plugin adds allowlist sanitization, MIME validation, and per-role permission controls to mitigate that risk.
 
 = Is sanitization automatic? =
-Yes, uploaded SVGs are sanitized before being stored.
+Yes. Every uploaded SVG is sanitized via enshrined/svg-sanitize before it reaches the Media Library.
 
 = Should all users upload SVG files? =
-No. Restrict upload access to trusted roles.
+No. By default only Administrators are on the allowlist. Add other roles only after weighing the upload-trust risk.
 
-== Support, Contributing & Sponsorship ==
-
-= I want to support you =
-
-I'm building these tools because WordPress developers and site owners deserve straightforward, practical solutions. There's no tracking, no ads, and you don't need to pay to use these plugins.
-
-If they're helpful, here are genuine ways to support the work:
-
-* **Sponsor this project:** Visit https://github.com/sponsors/thisismyurl if sponsorship fits your budget. Sponsorship helps, but it's always optional.
-* **Contribute code or ideas:** Opening a pull request, reporting an issue, or testing edge cases is just as valuable as sponsorship. Helping me improve these plugins is a great way to contribute.
-* **Share your experience:** A review on my [Google My Business profile](https://business.google.com/refer) or a follow on [WordPress.org](https://profiles.wordpress.org/thisismyurl/), [GitHub](https://github.com/thisismyurl), or [LinkedIn](https://linkedin.com/in/thisismyurl) helps others find this work.
-
-= I found a bug or have a feature idea =
-
-* **File an issue on GitHub:** Visit https://github.com/thisismyurl/[plugin-name]/issues and include your WordPress and PHP version.
-* **Start a discussion:** Use the Discussions tab on GitHub for questions or ideas.
-
-= I want to contribute code =
-
-Code contributions are welcome and genuinely valuable:
-
-1. Fork the repository on GitHub.
-2. Create a feature branch (e.g., `feature/improve-safety`).
-3. Make your changes and test thoroughly.
-4. Follow WordPress coding standards.
-5. Open a pull request with a clear description of what changed and why.
-
-I review PRs thoughtfully and appreciate well-tested contributions. Contributing is never required, but it's genuinely helpful.
-
+= Where is the sanitization-failure log? =
+It lives in the `timu_svg_failure_log` option. Inspect it with WP-CLI:
+`wp option get timu_svg_failure_log --format=json`
 
 == Changelog ==
+
+= 0.6123 =
+* **Security:** Replaced the self-rolled denylist sanitizer with the allowlist-based `enshrined/svg-sanitize` library. Addresses GHSA-wmc2-4458-vm72.
+* **Security:** Added `finfo_file()` server-side MIME validation before sanitization.
+* **Security:** Sandboxed Media Library SVG preview in `<iframe sandbox="">`.
+* **Feature:** Per-role upload allowlist with a new `upload_svg_files` capability.
+* **Feature:** Sanitization-failure log (last 50 events) at `timu_svg_failure_log`.
+* **Fix:** Settings page moved to `Settings > SVG Support` to match documentation.
+* **Fix:** `register_activation_hook()` registered at file scope so defaults seed reliably.
+* **Fix:** Strict comparison on `enabled` option.
+* **Fix:** `WP_Filesystem` for in-place writes; dropped `@gzdecode` error suppression.
+* **Fix:** Stable tag aligned with the plugin header version.
+* **Hygiene:** Bumped Requires PHP to 8.1; added CHANGELOG.md, dependabot.yml, CODEOWNERS.
 
 = 1.6365 =
 * Documentation and profile alignment update.
 
 == Upgrade Notice ==
 
-= 1.6365 =
-Maintenance and documentation update.
+= 0.6123 =
+Critical security release. Replaces the self-rolled SVG sanitizer with the well-audited enshrined/svg-sanitize allowlist library. Addresses GHSA-wmc2-4458-vm72. Update immediately.
