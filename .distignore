@@ -1,0 +1,33 @@
+# Files and directories excluded from the plugin distribution zip.
+# Note: vendor/ is INTENTIONALLY NOT excluded — this plugin runtime-depends
+# on enshrined/svg-sanitize via Composer's autoloader, and end users do not
+# run `composer install`. The vendor/ tree must ship.
+
+.git
+.github
+.gitignore
+.distignore
+.editorconfig
+.phpcs.xml.dist
+phpcs.xml
+phpcs.xml.dist
+phpstan.neon
+phpunit.xml
+phpunit.xml.dist
+composer.lock
+node_modules
+tests
+docs
+CONTRIBUTING.md
+CODEOWNERS
+README.md
+SECURITY.md
+CHANGELOG.md
+
+# Composer dev-only paths inside vendor/ (keep runtime deps).
+vendor/bin
+vendor/squizlabs
+vendor/wp-coding-standards
+vendor/phpcompatibility
+vendor/phpcsstandards
+vendor/dealerdirect

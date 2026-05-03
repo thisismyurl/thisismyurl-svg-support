@@ -1,0 +1,28 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# Logs
+*.log
+debug.log
+
+# Node (if ever added — currently unused)
+node_modules/
+
+# Composer dev-only artifacts inside vendor/ — keep runtime deps tracked.
+vendor/bin/
+vendor/squizlabs/
+vendor/wp-coding-standards/
+vendor/phpcompatibility/
+vendor/phpcsstandards/
+vendor/dealerdirect/
+
+# PHPCS / PHPUnit caches
+.phpcs-cache
+.phpunit.result.cache
+phpunit.html
+build/coverage

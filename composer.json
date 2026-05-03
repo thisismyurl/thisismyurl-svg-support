@@ -1,0 +1,38 @@
+{
+    "name": "thisismyurl/thisismyurl-svg-support",
+    "description": "Safe SVG uploads for WordPress with allowlist sanitization, MIME validation, and role controls.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "homepage": "https://thisismyurl.com/thisismyurl-svg-support/",
+    "authors": [
+        {
+            "name": "Christopher Ross",
+            "email": "security@thisismyurl.com",
+            "homepage": "https://thisismyurl.com/"
+        }
+    ],
+    "require": {
+        "php": ">=8.1",
+        "enshrined/svg-sanitize": "^0.22"
+    },
+    "require-dev": {
+        "wp-coding-standards/wpcs": "^3.0",
+        "phpcompatibility/phpcompatibility-wp": "^2.1"
+    },
+    "autoload": {
+        "classmap": [
+            "class-svg-sanitizer.php"
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "scripts": {
+        "lint:phpcs": "phpcs --standard=WordPress --extensions=php --ignore=vendor,assets ."
+    }
+}
