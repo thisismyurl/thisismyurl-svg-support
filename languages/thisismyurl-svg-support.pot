@@ -1,0 +1,96 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-04 23:54+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: thisismyurl-svg-support.php:167
+msgid ""
+"SVG upload rejected: your role is not on the SVG upload allowlist. Ask an "
+"administrator."
+msgstr ""
+
+#: thisismyurl-svg-support.php:185
+msgid "SVG upload rejected: file content does not match an SVG MIME type."
+msgstr ""
+
+#: thisismyurl-svg-support.php:194
+msgid ""
+"SVG upload rejected: failed sanitization. The file may contain script, event "
+"handlers, or other unsafe content."
+msgstr ""
+
+#: thisismyurl-svg-support.php:236
+msgid "Settings"
+msgstr ""
+
+#: thisismyurl-svg-support.php:237
+msgid "Donate"
+msgstr ""
+
+#: thisismyurl-svg-support.php:324
+msgid "SVG Support Settings"
+msgstr ""
+
+#: thisismyurl-svg-support.php:325 thisismyurl-svg-support.php:347
+msgid "SVG Support"
+msgstr ""
+
+#: thisismyurl-svg-support.php:352
+#, php-format
+msgid "by %s"
+msgstr ""
+
+#: thisismyurl-svg-support.php:368
+msgid "Enable SVG Uploads"
+msgstr ""
+
+#: thisismyurl-svg-support.php:372
+msgid "Allow .svg files to be uploaded to the Media Library."
+msgstr ""
+
+#: thisismyurl-svg-support.php:377 thisismyurl-svg-support.php:380
+msgid "Roles allowed to upload SVG"
+msgstr ""
+
+#: thisismyurl-svg-support.php:399
+msgid ""
+"Only checked roles can upload SVG files. If none are checked, only "
+"Administrators retain access."
+msgstr ""
+
+#: thisismyurl-svg-support.php:405
+msgid "Save SVG Settings"
+msgstr ""
+
+#: thisismyurl-svg-support.php:413
+msgid "Documentation"
+msgstr ""
+
+#: thisismyurl-svg-support.php:415
+msgid ""
+"SVG files are XML-based and can carry executable content. Uploads are "
+"sanitized via an allowlist (enshrined/svg-sanitize) before being stored. "
+"Admin previews are sandboxed."
+msgstr ""
+
+#: thisismyurl-svg-support.php:419
+msgid "Donate to Development"
+msgstr ""
+
+#: thisismyurl-svg-support.php:456
+msgid "Sanitized SVG preview"
+msgstr ""

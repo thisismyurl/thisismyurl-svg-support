@@ -1,0 +1,57 @@
+# Translation of thisismyurl-svg-support to Canadian French
+# Copyright (C) 2025 This Is My URL
+# This file is distributed under the same license as the thisismyurl-svg-support package.
+msgid ""
+msgstr ""
+"Project-Id-Version: thisismyurl-svg-support\n"
+"Report-Msgid-Bugs-To: https://github.com/thisismyurl/thisismyurl-svg-support/issues\n"
+"POT-Creation-Date: 2025-05-04T00:00:00+00:00\n"
+"PO-Revision-Date: 2025-05-04T00:00:00+00:00\n"
+"Last-Translator: This Is My URL <hello@thisismyurl.com>\n"
+"Language-Team: Canadian French <hello@thisismyurl.com>\n"
+"Language: fr_CA\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Manual\n"
+"X-Poedit-Country: CANADA\n"
+
+msgid "SVG upload rejected: file content does not match an SVG MIME type."
+msgstr "Téléversement SVG refusé : le contenu du fichier ne correspond pas à un type MIME SVG."
+
+msgid "Settings"
+msgstr "Réglages"
+
+msgid "Donate"
+msgstr "Faire un don"
+
+msgid "SVG Support Settings"
+msgstr "Réglages de la prise en charge SVG"
+
+msgid "SVG Support"
+msgstr "Prise en charge SVG"
+
+msgid "by %s"
+msgstr "par %s"
+
+msgid "Enable SVG Uploads"
+msgstr "Activer le téléversement de fichiers SVG"
+
+msgid "Allow .svg files to be uploaded to the Media Library."
+msgstr "Autoriser le téléversement de fichiers .svg dans la médiathèque."
+
+msgid "Roles allowed to upload SVG"
+msgstr "Rôles autorisés à téléverser des SVG"
+
+msgid "Save SVG Settings"
+msgstr "Enregistrer les réglages SVG"
+
+msgid "Documentation"
+msgstr "Documentation"
+
+msgid "Donate to Development"
+msgstr "Soutenir le développement"
+
+msgid "Sanitized SVG preview"
+msgstr "Aperçu SVG nettoyé"

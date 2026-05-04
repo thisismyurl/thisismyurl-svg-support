@@ -12,6 +12,7 @@
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       thisismyurl-svg-support
+ * Domain Path:       /languages
  * Update URI:        https://github.com/thisismyurl/thisismyurl-svg-support
  * GitHub Plugin URI: https://github.com/thisismyurl/thisismyurl-svg-support
  * Primary Branch:    main
@@ -475,6 +476,7 @@ register_activation_hook( __FILE__, array( 'TIMU_SVG_Support', 'activate_plugin_
 add_action(
 	'plugins_loaded',
 	static function () {
+		load_plugin_textdomain( 'thisismyurl-svg-support', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 		( new TIMU_SVG_Support() )->register_hooks();
 
 		$updater_path = plugin_dir_path( __FILE__ ) . 'updater.php';
