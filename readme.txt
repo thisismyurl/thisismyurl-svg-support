@@ -2,7 +2,7 @@
 Contributors: thisismyurl
 Tags: svg, media library, sanitization, uploads, security
 Requires at least: 6.0
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 8.1
 Stable tag: 0.6123
 License: GPLv2 or later
