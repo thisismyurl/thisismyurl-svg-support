@@ -5,6 +5,12 @@ All notable changes to this plugin are documented here. The format follows
 the `x.Yddd` versioning scheme (`x` = release class, `Y` = year last digit,
 `ddd` = Julian day).
 
+## [1.6143] — 2026-05-23
+
+### Changed
+- Promoted to a full release (class 1). The `0.6xxx` line was pre-release on the `x.Yddd` scheme.
+- Standardized the donation link to GitHub Sponsors (`https://github.com/sponsors/thisismyurl`).
+
 ## [0.6123] — 2026-05-03
 
 ### Security
