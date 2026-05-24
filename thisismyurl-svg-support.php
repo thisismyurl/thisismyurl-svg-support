@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       SVG Support by thisismyurl.com
+ * Plugin Name:       This Is My URL - SVG Support
  * Plugin URI:        https://thisismyurl.com/thisismyurl-svg-support/
  * Description:       Safely enable SVG uploads in the WordPress Media Library with allowlist sanitization, MIME validation, per-role permissions, and a sandboxed admin preview.
  * Version:           1.6143
@@ -8,7 +8,7 @@
  * Requires PHP:      8.1
  * Author:            Christopher Ross
  * Author URI:        https://thisismyurl.com/
- * Donate link:       https://thisismyurl.com/donate/
+ * Donate link:       https://github.com/sponsors/thisismyurl
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       thisismyurl-svg-support
@@ -234,7 +234,7 @@ class TIMU_SVG_Support {
 	public function add_plugin_action_links( $links ) {
 		$custom = array(
 			'<a href="' . esc_url( admin_url( 'options-general.php?page=thisismyurl-svg-support' ) ) . '">' . esc_html__( 'Settings', 'thisismyurl-svg-support' ) . '</a>',
-			'<a href="https://thisismyurl.com/donate/" target="_blank" rel="noopener" style="color: #2271b1; font-weight: bold;">' . esc_html__( 'Donate', 'thisismyurl-svg-support' ) . '</a>',
+			'<a href="' . esc_url( 'https://github.com/sponsors/thisismyurl' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Sponsor', 'thisismyurl-svg-support' ) . '</a>',
 		);
 		return array_merge( $custom, $links );
 	}
@@ -415,8 +415,8 @@ class TIMU_SVG_Support {
 								<p><?php esc_html_e( 'SVG files are XML-based and can carry executable content. Uploads are sanitized via an allowlist (enshrined/svg-sanitize) before being stored. Admin previews are sandboxed.', 'thisismyurl-svg-support' ); ?></p>
 								<hr />
 								<p>
-									<a href="https://thisismyurl.com/donate/" class="button button-secondary" target="_blank" rel="noopener">
-										<?php esc_html_e( 'Donate to Development', 'thisismyurl-svg-support' ); ?>
+									<a href="<?php echo esc_url( 'https://github.com/sponsors/thisismyurl' ); ?>" class="button button-secondary" target="_blank" rel="noopener">
+										<?php esc_html_e( 'Sponsor development', 'thisismyurl-svg-support' ); ?>
 									</a>
 								</p>
 							</div>

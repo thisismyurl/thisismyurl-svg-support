@@ -1,4 +1,4 @@
-=== SVG Support by This Is My URL ===
+=== This Is My URL - SVG Support ===
 Contributors: thisismyurl
 Donate link: https://github.com/sponsors/thisismyurl
 Tags: svg, media library, sanitization, uploads, security
