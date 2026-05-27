@@ -3,7 +3,7 @@
  * Plugin Name:       This Is My URL - SVG Support
  * Plugin URI:        https://thisismyurl.com/thisismyurl-svg-support/
  * Description:       Safely enable SVG uploads in the WordPress Media Library with allowlist sanitization, MIME validation, per-role permissions, and a sandboxed admin preview.
- * Version:           1.6143
+ * Version:           1.6147
  * Requires at least: 6.0
  * Requires PHP:      8.1
  * Author:            Christopher Ross
