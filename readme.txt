@@ -65,6 +65,9 @@ It lives in the `timu_svg_failure_log` option. Inspect it with WP-CLI:
 
 == Changelog ==
 
+= 1.6148 =
+* **Feature:** WordPress 7.0 Abilities API support. Registers the readonly `thisismyurl-svg-support/sanitize-svg` ability, which sanitizes SVG markup (or an existing SVG attachment, read-only) in memory and returns the cleaned result plus a report of what was stripped — without modifying any stored file.
+
 = 1.6147 =
 * Unified plugin versioning to the x.Yddd calendar-version scheme.
 * Confirmed compatibility with WordPress 7.0.

@@ -25,6 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require_once __DIR__ . '/class-svg-sanitizer.php';
+require_once __DIR__ . '/abilities.php';
 
 /**
  * Main plugin controller.
