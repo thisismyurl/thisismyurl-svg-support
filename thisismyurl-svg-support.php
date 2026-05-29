@@ -445,20 +445,13 @@ add_action(
 		load_plugin_textdomain( 'thisismyurl-svg-support', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 		( new TIMU_SVG_Support() )->register_hooks();
 
-		$updater_path = plugin_dir_path( __FILE__ ) . 'updater.php';
-		if ( file_exists( $updater_path ) ) {
-			require_once $updater_path;
-			if ( class_exists( 'TIMU_GitHub_Updater' ) ) {
-				new TIMU_GitHub_Updater(
-					array(
-						'slug'               => 'thisismyurl-svg-support',
-						'proper_folder_name' => 'thisismyurl-svg-support',
-						'api_url'            => 'https://api.github.com/repos/thisismyurl/thisismyurl-svg-support/releases/latest',
-						'github_url'         => 'https://github.com/thisismyurl/thisismyurl-svg-support',
-						'plugin_file'        => __FILE__,
-					)
-				);
-			}
-		}
+		require_once plugin_dir_path( __FILE__ ) . 'github-updater.php';
+		\ThisIsMyURL\SVG\GitHubReleaseUpdater::boot(
+			array(
+				'plugin_file' => __FILE__,
+				'slug'        => 'thisismyurl-svg-support',
+				'repo'        => 'thisismyurl/thisismyurl-svg-support',
+			)
+		);
 	}
 );
