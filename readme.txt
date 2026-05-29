@@ -82,7 +82,7 @@ It lives in the `timu_svg_failure_log` option. Inspect it with WP-CLI:
 = 0.6123 =
 * **Security:** Replaced the self-rolled denylist sanitizer with the allowlist-based `enshrined/svg-sanitize` library. Addresses GHSA-wmc2-4458-vm72.
 * **Security:** Added `finfo_file()` server-side MIME validation before sanitization.
-* **Security:** Sandboxed Media Library SVG preview in `<iframe sandbox="">`.
+* **Security:** Sandboxed Media Library SVG preview in `<iframe sandbox="">` (never functioned; removed in 1.6149).
 * **Feature:** Per-role upload allowlist with a new `upload_svg_files` capability.
 * **Feature:** Sanitization-failure log (last 50 events) at `timu_svg_failure_log`.
 * **Fix:** Settings page moved to `Settings > SVG Support` to match documentation.
