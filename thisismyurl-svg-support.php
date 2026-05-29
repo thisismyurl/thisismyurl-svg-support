@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       This Is My URL - SVG Support
  * Plugin URI:        https://thisismyurl.com/thisismyurl-svg-support/
- * Description:       Safely enable SVG uploads in the WordPress Media Library with allowlist sanitization, MIME validation, per-role permissions, and a sandboxed admin preview.
+ * Description:       Safely enable SVG uploads in the WordPress Media Library with allowlist sanitization, MIME validation, and per-role permissions.
  * Version:           1.6147
  * Requires at least: 6.0
  * Requires PHP:      8.1
@@ -56,7 +56,6 @@ class TIMU_SVG_Support {
 		add_action( 'admin_head', array( $this, 'fix_svg_media_library_display' ) );
 		add_action( 'admin_init', array( $this, 'register_svg_settings' ) );
 		add_action( 'admin_menu', array( $this, 'create_svg_settings_page' ) );
-		add_filter( 'wp_prepare_attachment_for_js', array( $this, 'sandbox_svg_preview' ), 10, 2 );
 		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'add_plugin_action_links' ) );
 	}
 
@@ -247,6 +246,8 @@ class TIMU_SVG_Support {
 	 * @return array
 	 */
 	public function add_svg_mime_types( $mimes ) {
+		// Registers the MIME only — the per-role allowlist gate (UPLOAD_CAP) is
+		// enforced in sanitize_svg_on_upload() on wp_handle_upload_prefilter.
 		$options    = (array) get_option( self::OPTION_KEY, array() );
 		$is_enabled = isset( $options['enabled'] ) && 1 === (int) $options['enabled'];
 
@@ -413,7 +414,7 @@ class TIMU_SVG_Support {
 						<div class="postbox">
 							<h2 class="hndle"><span><?php esc_html_e( 'Documentation', 'thisismyurl-svg-support' ); ?></span></h2>
 							<div class="inside">
-								<p><?php esc_html_e( 'SVG files are XML-based and can carry executable content. Uploads are sanitized via an allowlist (enshrined/svg-sanitize) before being stored. Admin previews are sandboxed.', 'thisismyurl-svg-support' ); ?></p>
+								<p><?php esc_html_e( 'SVG files are XML-based and can carry executable content. Uploads are sanitized via an allowlist (enshrined/svg-sanitize) before being stored.', 'thisismyurl-svg-support' ); ?></p>
 								<hr />
 								<p>
 									<a href="<?php echo esc_url( 'https://github.com/sponsors/thisismyurl' ); ?>" class="button button-secondary" target="_blank" rel="noopener">
@@ -427,42 +428,6 @@ class TIMU_SVG_Support {
 			</div>
 		</div>
 		<?php
-	}
-
-	/**
-	 * Sandbox SVG previews in the Media Library. We replace the rendered
-	 * `<img src="...svg">` tile with a sandboxed iframe pointing at the SVG —
-	 * cookie/JS exfil from a pre-sanitization or edge-case payload is contained.
-	 *
-	 * @param array   $response Attachment data prepared for JS.
-	 * @param WP_Post $attachment Attachment post.
-	 * @return array
-	 */
-	public function sandbox_svg_preview( $response, $attachment ) {
-		if ( empty( $response['mime'] ) || 'image/svg+xml' !== $response['mime'] ) {
-			return $response;
-		}
-
-		$src = wp_get_attachment_url( $attachment->ID );
-		if ( ! $src ) {
-			return $response;
-		}
-
-		// Replace inline-img preview surfaces with a sandboxed iframe markup
-		// that the Media modal will render as the rich content area. The
-		// `sandbox` attribute is empty -> all powerful features denied.
-		$iframe = sprintf(
-			'<iframe src="%s" sandbox="" referrerpolicy="no-referrer" loading="lazy" style="width:100%%;height:100%%;min-height:240px;border:0;background:#fff;" title="%s"></iframe>',
-			esc_url( $src ),
-			esc_attr__( 'Sanitized SVG preview', 'thisismyurl-svg-support' )
-		);
-
-		$response['image']['src'] = $src;
-		// Modal "rich" preview uses `sizes` / `image` keys; provide an HTML
-		// override the modal's view will surface.
-		$response['svg_sandbox_html'] = $iframe;
-
-		return $response;
 	}
 }
 

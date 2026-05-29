@@ -12,7 +12,7 @@ Plugin URI: https://thisismyurl.com/thisismyurl-svg-support/
 Author: This Is My URL
 Author URI: https://thisismyurl.com/
 
-Safe SVG uploads for WordPress with allowlist sanitization (enshrined/svg-sanitize), MIME validation, per-role permissions, and a sandboxed admin preview.
+Safe SVG uploads for WordPress with allowlist sanitization (enshrined/svg-sanitize), MIME validation, and per-role permissions.
 
 == Description ==
 
@@ -24,7 +24,6 @@ SVG Support enables secure SVG upload workflows in WordPress with hardened defau
 * Allowlist sanitization via the well-vetted [enshrined/svg-sanitize](https://github.com/darylldoyle/svg-sanitizer) library
 * Server-side MIME validation with `finfo_file()` before sanitization runs
 * Per-role upload allowlist configurable from Settings > SVG Support
-* Sandboxed iframe preview in the Media Library (no cookie/JS exfil surface)
 * Sanitization-failure log (last 50 events) for incident response
 
 = Practical benefits =
@@ -64,6 +63,9 @@ It lives in the `timu_svg_failure_log` option. Inspect it with WP-CLI:
 `wp option get timu_svg_failure_log --format=json`
 
 == Changelog ==
+
+= 1.6149 =
+* **Security/honesty:** Removed the "sandboxed iframe preview" claim from the readme and settings page, and deleted the dead `sandbox_svg_preview()` code path that set an `svg_sandbox_html` key nothing consumed. The preview was never wired (the plugin ships no Media-view JS to render it), so SVGs still rendered as raw `<img>`. The real defense — allowlist sanitization on upload plus `finfo_file()` MIME validation — is unchanged and remains the control. Shipped state now matches the documentation.
 
 = 1.6148 =
 * **Feature:** WordPress 7.0 Abilities API support. Registers the readonly `thisismyurl-svg-support/sanitize-svg` ability, which sanitizes SVG markup (or an existing SVG attachment, read-only) in memory and returns the cleaned result plus a report of what was stripped — without modifying any stored file.

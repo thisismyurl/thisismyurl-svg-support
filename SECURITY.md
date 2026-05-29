@@ -43,7 +43,6 @@ authenticated WordPress sessions.
 | **XSS via `<script>`, event handlers, `javascript:` URIs in SVG** | Allowlist sanitization via `enshrined/svg-sanitize` (only known-safe elements/attributes survive). |
 | **Disguised payload (HTML/JS named `.svg`)** | `finfo_file()` MIME check before sanitization rejects content that does not match an SVG MIME family. |
 | **Decompression bomb / billion-laughs in `.svgz`** | 5 MB hard byte ceiling on both compressed and decompressed payloads; `LIBXML_NONET` + entity stripping in the underlying sanitizer. |
-| **Cookie / token exfiltration via Media Library preview** | Admin previews rendered in `<iframe sandbox="" referrerpolicy="no-referrer">` — script execution and credential leakage are denied at the iframe boundary. |
 | **Privilege escalation via untrusted role uploading SVG** | New `upload_svg_files` capability on a per-role allowlist; default grants only `administrator`. |
 | **Silent compromise** | Sanitization-failure log records filename, reason, user, and IP for the most recent 50 events. |
 
