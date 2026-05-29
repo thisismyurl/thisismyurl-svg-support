@@ -1,10 +1,10 @@
 <?php
 /**
- * Bundled GitHub release updater.
+ * Shared GitHub release updater.
  *
  * Polls a GitHub Release for a newer tag and feeds it into WordPress's
- * plugin-update transient. Duplicated per plugin under a unique namespace so
- * two co-installed thisismyurl.com plugins can't collide on the class name.
+ * plugin-update transient. Bundled per-plugin under a prefixed namespace so
+ * two co-installed plugins can't collide on the class name.
  *
  * @package ThisIsMyURL\SVG
  */
