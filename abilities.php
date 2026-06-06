@@ -1,6 +1,6 @@
 <?php
 /**
- * WP 7 Abilities API registration for This Is My URL - SVG Support.
+ * WP 7 Abilities API registration for Christopher Ross - SVG Support.
  *
  * Exposes the plugin's in-memory SVG sanitizer as a discoverable,
  * REST/AI-invokable READONLY ability: callers pass raw SVG markup (or the ID

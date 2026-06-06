@@ -1,4 +1,4 @@
-=== This Is My URL - SVG Support ===
+=== - SVG Support by Christopher Ross ===
 Contributors: thisismyurl
 Donate link: https://github.com/sponsors/thisismyurl
 Tags: svg, media library, sanitization, uploads, security
@@ -9,7 +9,7 @@ Stable tag: 1.6149.0734
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Plugin URI: https://thisismyurl.com/thisismyurl-svg-support/
-Author: This Is My URL
+Author: Christopher Ross
 Author URI: https://thisismyurl.com/
 
 Safe SVG uploads for WordPress with allowlist sanitization (enshrined/svg-sanitize), MIME validation, and per-role permissions.
@@ -34,7 +34,7 @@ SVG Support enables secure SVG upload workflows in WordPress with hardened defau
 
 = EEAT and credibility =
 
-Built by This Is My URL, a WordPress development and technical SEO practice.
+Built by Christopher Ross, a WordPress development and technical SEO practice.
 
 * WordPress.org profile: https://profiles.wordpress.org/thisismyurl/
 * GitHub profile: https://github.com/thisismyurl
