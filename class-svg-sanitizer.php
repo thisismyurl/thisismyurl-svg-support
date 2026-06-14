@@ -121,17 +121,25 @@ class TIMU_SVG_Sanitizer {
 	/**
 	 * Sanitize an SVG string. Returns the sanitized SVG, or false on failure.
 	 *
-	 * @param string $svg Raw SVG markup.
+	 * The hardening posture is identical whether or not minification runs:
+	 * the same allowlist, the same `removeRemoteReferences( true )`. Minify
+	 * only collapses whitespace, comments, and redundant metadata in the
+	 * already-sanitized output to cut file weight. The upload path leaves it
+	 * off (default) so on-upload behaviour is unchanged; the Optimize tab
+	 * passes true.
+	 *
+	 * @param string $svg    Raw SVG markup.
+	 * @param bool   $minify Whether to minify the sanitized output. Default false.
 	 * @return string|false
 	 */
-	public static function sanitize_string( string $svg ) {
+	public static function sanitize_string( string $svg, bool $minify = false ) {
 		if ( ! class_exists( Sanitizer::class ) ) {
 			self::$last_error = 'sanitizer-library-missing';
 			return false;
 		}
 
 		$sanitizer = new Sanitizer();
-		$sanitizer->minify( false );
+		$sanitizer->minify( $minify );
 		$sanitizer->removeRemoteReferences( true );
 
 		$clean = $sanitizer->sanitize( $svg );

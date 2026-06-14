@@ -5,25 +5,29 @@ Tags: svg, media library, sanitization, uploads, security
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 8.1
-Stable tag: 1.6149.0734
+Stable tag: 1.6165.0822
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Plugin URI: https://thisismyurl.com/thisismyurl-svg-support/
 Author: Christopher Ross
 Author URI: https://thisismyurl.com/
 
-Safe SVG uploads for WordPress with allowlist sanitization (enshrined/svg-sanitize), MIME validation, and per-role permissions.
+Safe SVG uploads for WordPress with allowlist sanitization (enshrined/svg-sanitize), MIME validation, per-role permissions, and in-place sanitize and minify.
 
 == Description ==
 
-SVG Support enables secure SVG upload workflows in WordPress with hardened defaults.
+SVG Support enables secure SVG upload workflows in WordPress with hardened defaults, then gives you a Tools page to re-sanitize and minify the SVG files already in your Media Library.
 
 = Key features =
 
 * Enables `.svg` and `.svgz` uploads for trusted roles only
 * Allowlist sanitization via the well-vetted [enshrined/svg-sanitize](https://github.com/darylldoyle/svg-sanitizer) library
 * Server-side MIME validation with `finfo_file()` before sanitization runs
-* Per-role upload allowlist configurable from Settings > SVG Support
+* Per-role upload allowlist configurable from Tools > SVG Support
+* Tools > SVG Support page with Optimize, Settings, and Report tabs
+* Bulk and single "sanitize and optimize": re-runs the allowlist sanitizer with minification on to strip unsafe content and cut file weight
+* Per-file backups under `uploads/svg-backups/` with one-click restore
+* Per-file report of what the sanitizer stripped — the transparency record security buyers want
 * Sanitization-failure log (last 50 events) for incident response
 
 = Practical benefits =
@@ -44,8 +48,9 @@ Built by Christopher Ross, a WordPress development and technical SEO practice.
 
 1. Upload the plugin to `/wp-content/plugins/thisismyurl-svg-support/`.
 2. Activate through the Plugins screen in WordPress.
-3. Go to `Settings > SVG Support`.
-4. Choose which roles can upload SVG files.
+3. Go to `Tools > SVG Support`.
+4. On the Settings tab, choose which roles can upload SVG files.
+5. On the Optimize tab, sanitize and minify the SVG files already in your library.
 
 == Frequently Asked Questions ==
 
@@ -64,7 +69,9 @@ It lives in the `timu_svg_failure_log` option. Inspect it with WP-CLI:
 
 == Changelog ==
 
-= 1.6149 =
+= 1.6165.0822 =
+* **Feature:** Tools > SVG Support page with Optimize, Settings, and Report tabs, matching the shared admin shell across the image-support plugin family. The Optimize tab lists SVG attachments and bulk- or single-sanitizes them: it re-runs the allowlist sanitizer (enshrined/svg-sanitize) with minification on, stripping unsafe content and cutting file weight in one pass. Originals are backed up under `uploads/svg-backups/` with one-click restore, and a per-file report shows what was stripped. The Report tab summarizes files sanitized, weight saved, and unsafe items removed.
+* **No security change:** Upload-time sanitization, the `finfo_file()` MIME check, the per-role `upload_svg_files` allowlist, and the bundled enshrined/svg-sanitize library are unchanged. Minification is a display/weight option layered on the already-sanitized output; the allowlist and remote-reference removal are identical with or without it.
 * **Security/honesty:** Removed the "sandboxed iframe preview" claim from the readme and settings page, and deleted the dead `sandbox_svg_preview()` code path that set an `svg_sandbox_html` key nothing consumed. The preview was never wired (the plugin ships no Media-view JS to render it), so SVGs still rendered as raw `<img>`. The real defense — allowlist sanitization on upload plus `finfo_file()` MIME validation — is unchanged and remains the control. Shipped state now matches the documentation.
 
 = 1.6148 =
