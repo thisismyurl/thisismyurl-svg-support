@@ -5,6 +5,36 @@ All notable changes to this plugin are documented here. The format follows
 the `x.Yddd` versioning scheme (`x` = release class, `Y` = year last digit,
 `ddd` = Julian day).
 
+## [0.6174.1641] — 2026-06-23
+
+### Added
+
+- **WP-CLI command `wp timu-svg scan-existing`** — retroactively sanitizes all
+  SVG attachments in the Media Library. Queries `image/svg+xml` attachments
+  via `WP_Query`, reads each file via `WP_Filesystem`, passes content through
+  `TIMU_SVG_Sanitizer::sanitize_file()`, and outputs a per-file status line
+  (`OK` / `SKIP` / `FAIL`). Supports `--dry-run` (report without writing) and
+  `--batch-size=<n>` (default 25). Registered via `WP_CLI::add_command` as
+  `TIMU_SVG_CLI`, loaded from `class-svg-cli.php` only when `WP_CLI` is true.
+- **"Sanitize Existing SVGs" admin button** on the Settings > SVG Support
+  screen. Triggers `wp_ajax_timu_svg_scan_existing`; processes 25 files per
+  request with offset pagination until the server reports `has_more: false`.
+  Requires `manage_options` capability and a `timu_svg_scan_existing` nonce
+  (verified server-side with `wp_verify_nonce()`). Returns JSON with
+  `processed`, `total`, `next_offset`, `has_more`, and `errors` fields.
+  Per-file errors are displayed inline below the button.
+- `js/timu-svg-scan.js` — vanilla jQuery AJAX driver for the scan button;
+  enqueued via `wp_enqueue_script` on `admin_enqueue_scripts` only on the SVG
+  Support settings page. Nonce and i18n strings injected via
+  `wp_localize_script`.
+
+### Security note
+
+This release closes the documented gap in `SECURITY.md` under "Threats
+explicitly NOT addressed": SVGs uploaded before the allowlist sanitizer was
+active were never retroactively cleaned. Both the CLI command and the admin
+button now provide an auditable path to close that gap.
+
 ## [0.6123] — 2026-05-03
 
 ### Security

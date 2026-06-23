@@ -17,6 +17,10 @@
  * @since 1.260506
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 if ( ! class_exists( 'TIMU_GitHub_Updater' ) ) {
 
 	class TIMU_GitHub_Updater {

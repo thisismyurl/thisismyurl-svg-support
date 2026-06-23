@@ -4,14 +4,14 @@ Tags: svg, media library, sanitization, uploads, security
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 8.1
-Stable tag: 0.6123
+Stable tag: 0.6174.1641
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Plugin URI: https://thisismyurl.com/thisismyurl-svg-support/
 Author: This Is My URL
 Author URI: https://thisismyurl.com/
 
-Safe SVG uploads for WordPress with allowlist sanitization (enshrined/svg-sanitize), MIME validation, per-role permissions, and a sandboxed admin preview.
+Safe SVG uploads for WordPress with allowlist sanitization, MIME validation, per-role permissions, and a sandboxed admin preview.
 
 == Description ==
 
@@ -64,6 +64,10 @@ It lives in the `timu_svg_failure_log` option. Inspect it with WP-CLI:
 
 == Changelog ==
 
+= 0.6174.1641 =
+* **Feature:** WP-CLI command `wp timu-svg scan-existing` — retroactively sanitizes all SVG attachments in the Media Library via `TIMU_SVG_Sanitizer::sanitize_file()`. Supports `--dry-run` and `--batch-size` options.
+* **Feature:** "Sanitize Existing SVGs" button on the Settings > SVG Support screen. Runs AJAX batches of 25 files with nonce verification and `manage_options` capability gate; displays per-file progress and errors inline.
+
 = 0.6123 =
 * **Security:** Replaced the self-rolled denylist sanitizer with the allowlist-based `enshrined/svg-sanitize` library. Addresses GHSA-wmc2-4458-vm72.
 * **Security:** Added `finfo_file()` server-side MIME validation before sanitization.
@@ -77,7 +81,7 @@ It lives in the `timu_svg_failure_log` option. Inspect it with WP-CLI:
 * **Fix:** Stable tag aligned with the plugin header version.
 * **Hygiene:** Bumped Requires PHP to 8.1; added CHANGELOG.md, dependabot.yml, CODEOWNERS.
 
-= 1.6365 =
+= 1.6365 (prior numbering scheme) =
 * Documentation and profile alignment update.
 
 == Upgrade Notice ==
