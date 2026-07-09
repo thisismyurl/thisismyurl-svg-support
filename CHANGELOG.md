@@ -5,6 +5,12 @@ All notable changes to this plugin are documented here. The format follows
 the `x.Yddd` versioning scheme (`x` = release class, `Y` = year last digit,
 `ddd` = Julian day).
 
+## 1.6190.1670 — 2026-07-09
+
+### Changed
+- Suite core refactor — Vortops client and settings UI moved to shared `class-timu-suite-core.php`. Single canonical file synced across all thisismyurl plugins.
+- Vortops postbox now rendered by `TIMU_Suite_Settings::render_vortops_postbox()`.
+
 ## 1.6190.1630 — 2026-07-09
 
 ### Added
