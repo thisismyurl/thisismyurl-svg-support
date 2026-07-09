@@ -1,29 +1,33 @@
-=== SVG Support by This Is My URL ===
+=== SVG Support by Christopher Ross ===
 Contributors: thisismyurl
+Donate link: https://github.com/sponsors/thisismyurl
 Tags: svg, media library, sanitization, uploads, security
 Requires at least: 6.0
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 8.1
 Stable tag: 0.6174.1641
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Plugin URI: https://thisismyurl.com/thisismyurl-svg-support/
-Author: This Is My URL
+Author: Christopher Ross
 Author URI: https://thisismyurl.com/
 
 Safe SVG uploads for WordPress with allowlist sanitization, MIME validation, per-role permissions, and a sandboxed admin preview.
 
 == Description ==
 
-SVG Support enables secure SVG upload workflows in WordPress with hardened defaults.
+SVG Support enables secure SVG upload workflows in WordPress with hardened defaults, then gives you a Tools page to re-sanitize and minify the SVG files already in your Media Library.
 
 = Key features =
 
 * Enables `.svg` and `.svgz` uploads for trusted roles only
 * Allowlist sanitization via the well-vetted [enshrined/svg-sanitize](https://github.com/darylldoyle/svg-sanitizer) library
 * Server-side MIME validation with `finfo_file()` before sanitization runs
-* Per-role upload allowlist configurable from Settings > SVG Support
-* Sandboxed iframe preview in the Media Library (no cookie/JS exfil surface)
+* Per-role upload allowlist configurable from Tools > SVG Support
+* Tools > SVG Support page with Optimize, Settings, and Report tabs
+* Bulk and single "sanitize and optimize": re-runs the allowlist sanitizer with minification on to strip unsafe content and cut file weight
+* Per-file backups under `uploads/svg-backups/` with one-click restore
+* Per-file report of what the sanitizer stripped — the transparency record security buyers want
 * Sanitization-failure log (last 50 events) for incident response
 
 = Practical benefits =
@@ -34,7 +38,7 @@ SVG Support enables secure SVG upload workflows in WordPress with hardened defau
 
 = EEAT and credibility =
 
-Built by This Is My URL, a WordPress development and technical SEO practice.
+Built by Christopher Ross, a WordPress development and technical SEO practice.
 
 * WordPress.org profile: https://profiles.wordpress.org/thisismyurl/
 * GitHub profile: https://github.com/thisismyurl
@@ -44,8 +48,9 @@ Built by This Is My URL, a WordPress development and technical SEO practice.
 
 1. Upload the plugin to `/wp-content/plugins/thisismyurl-svg-support/`.
 2. Activate through the Plugins screen in WordPress.
-3. Go to `Settings > SVG Support`.
-4. Choose which roles can upload SVG files.
+3. Go to `Tools > SVG Support`.
+4. On the Settings tab, choose which roles can upload SVG files.
+5. On the Optimize tab, sanitize and minify the SVG files already in your library.
 
 == Frequently Asked Questions ==
 
@@ -71,7 +76,7 @@ It lives in the `timu_svg_failure_log` option. Inspect it with WP-CLI:
 = 0.6123 =
 * **Security:** Replaced the self-rolled denylist sanitizer with the allowlist-based `enshrined/svg-sanitize` library. Addresses GHSA-wmc2-4458-vm72.
 * **Security:** Added `finfo_file()` server-side MIME validation before sanitization.
-* **Security:** Sandboxed Media Library SVG preview in `<iframe sandbox="">`.
+* **Security:** Sandboxed Media Library SVG preview in `<iframe sandbox="">` (never functioned; removed in 1.6149).
 * **Feature:** Per-role upload allowlist with a new `upload_svg_files` capability.
 * **Feature:** Sanitization-failure log (last 50 events) at `timu_svg_failure_log`.
 * **Fix:** Settings page moved to `Settings > SVG Support` to match documentation.
