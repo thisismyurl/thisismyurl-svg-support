@@ -5,7 +5,7 @@ Tags: svg, media library, sanitization, uploads, security
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 8.1
-Stable tag: 0.6174.1641
+Stable tag: 1.6190.1530
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Plugin URI: https://thisismyurl.com/thisismyurl-svg-support/
@@ -68,6 +68,12 @@ It lives in the `timu_svg_failure_log` option. Inspect it with WP-CLI:
 `wp option get timu_svg_failure_log --format=json`
 
 == Changelog ==
+
+= 1.6190.1530 =
+* **Fix:** Resolved fatal "Cannot redeclare TIMU_SVG_Support::enqueue_admin_assets()" from a merge collision between two hook-registration approaches; dead `register_hooks()` instance method removed, surviving static path wired correctly.
+* **Fix:** `ajax_scan_existing` wired into `init()` so the Scan Existing SVGs AJAX handler is reachable again.
+* **Fix:** Removed `GitHub Plugin URI` and `Primary Branch` headers for WordPress.org directory compatibility.
+* **Fix:** Version corrected from 0.x back to 1.x (major version had regressed in a prior merge).
 
 = 0.6174.1641 =
 * **Feature:** WP-CLI command `wp timu-svg scan-existing` — retroactively sanitizes all SVG attachments in the Media Library via `TIMU_SVG_Sanitizer::sanitize_file()`. Supports `--dry-run` and `--batch-size` options.

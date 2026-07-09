@@ -5,6 +5,14 @@ All notable changes to this plugin are documented here. The format follows
 the `x.Yddd` versioning scheme (`x` = release class, `Y` = year last digit,
 `ddd` = Julian day).
 
+## [1.6190.1530] — 2026-07-09
+
+### Fixed
+- Resolved fatal "Cannot redeclare TIMU_SVG_Support::enqueue_admin_assets()" from a merge collision; dead `register_hooks()` instance method removed, surviving static path wired correctly.
+- `ajax_scan_existing` wired into `init()` so the Scan Existing SVGs AJAX handler is reachable.
+- Removed `GitHub Plugin URI` and `Primary Branch` headers for WordPress.org directory compatibility.
+- Version corrected from 0.x back to 1.x (major version had regressed in a prior merge).
+
 ## [0.6174.1641] — 2026-06-23
 
 ### Added

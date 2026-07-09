@@ -3,7 +3,7 @@
  * Plugin Name:       SVG Support by Christopher Ross
  * Plugin URI:        https://thisismyurl.com/thisismyurl-svg-support/
  * Description:       Safely enable SVG uploads in the WordPress Media Library with allowlist sanitization, MIME validation, per-role permissions, and a sandboxed admin preview.
- * Version:           0.6174.1641
+ * Version:           1.6190.1530
  * Requires at least: 6.0
  * Requires PHP:      8.1
  * Author:            Christopher Ross
@@ -13,8 +13,6 @@
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       thisismyurl-svg-support
  * Domain Path:       /languages
- * GitHub Plugin URI: https://github.com/thisismyurl/thisismyurl-svg-support
- * Primary Branch:    main
  *
  * @package TIMU_SVG_Support
  */
@@ -62,22 +60,6 @@ class TIMU_SVG_Support {
 	 * `upload_files`.
 	 */
 	public const UPLOAD_CAP = 'upload_svg_files';
-
-	/**
-	 * Bootstrap hook registrations.
-	 */
-	public function register_hooks(): void {
-		add_filter( 'upload_mimes', array( $this, 'add_svg_mime_types' ) );
-		add_filter( 'wp_check_filetype_and_ext', array( $this, 'check_svg_filetype_and_ext' ), 10, 4 );
-		add_filter( 'wp_handle_upload_prefilter', array( $this, 'sanitize_svg_on_upload' ) );
-		add_action( 'admin_head', array( $this, 'fix_svg_media_library_display' ) );
-		add_action( 'admin_init', array( $this, 'register_svg_settings' ) );
-		add_action( 'admin_menu', array( $this, 'create_svg_settings_page' ) );
-		add_filter( 'wp_prepare_attachment_for_js', array( $this, 'sandbox_svg_preview' ), 10, 2 );
-		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'add_plugin_action_links' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ) );
-		add_action( 'wp_ajax_timu_svg_scan_existing', array( $this, 'ajax_scan_existing' ) );
-	}
 
 	/**
 	 * One-shot defaults on activation. Static so register_activation_hook can
@@ -131,6 +113,7 @@ class TIMU_SVG_Support {
 		add_action( 'wp_ajax_timu_svg_optimize', array( __CLASS__, 'ajax_bulk_optimize' ) );
 		add_action( 'wp_ajax_timu_svg_process_batch', array( __CLASS__, 'ajax_process_batch' ) );
 		add_action( 'wp_ajax_timu_svg_restore_single', array( __CLASS__, 'ajax_restore_single' ) );
+		add_action( 'wp_ajax_timu_svg_scan_existing', array( __CLASS__, 'ajax_scan_existing' ) );
 		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( __CLASS__, 'add_plugin_action_links' ) );
 
 		// SVG upload + security core (preserved verbatim from the original plugin).
@@ -502,13 +485,43 @@ class TIMU_SVG_Support {
 			return;
 		}
 
+		$plugin_url = plugin_dir_url( __FILE__ );
+		$plugin_dir = plugin_dir_path( __FILE__ );
+
 		wp_enqueue_script(
 			'timu-svg-support-admin',
-			plugin_dir_url( __FILE__ ) . 'assets/js/admin.js',
+			$plugin_url . 'assets/js/admin.js',
 			array( 'jquery' ),
 			TIMU_SVG_VERSION,
 			true
 		);
+
+		$scan_js = $plugin_dir . 'js/timu-svg-scan.js';
+		if ( file_exists( $scan_js ) ) {
+			wp_enqueue_script(
+				'timu-svg-scan',
+				$plugin_url . 'js/timu-svg-scan.js',
+				array( 'jquery' ),
+				TIMU_SVG_VERSION,
+				true
+			);
+			wp_localize_script(
+				'timu-svg-scan',
+				'timuSvgScan',
+				array(
+					'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+					'nonce'   => wp_create_nonce( 'timu_svg_scan_existing' ),
+					'i18n'    => array(
+						'scanning'  => __( 'Scanning…', 'thisismyurl-svg-support' ),
+						'done'      => __( 'Scan complete.', 'thisismyurl-svg-support' ),
+						'error'     => __( 'Request error. Check the browser console.', 'thisismyurl-svg-support' ),
+						'processed' => __( 'Processed', 'thisismyurl-svg-support' ),
+						'of'        => __( 'of', 'thisismyurl-svg-support' ),
+						'files'     => __( 'files', 'thisismyurl-svg-support' ),
+					),
+				)
+			);
+		}
 	}
 
 	/**
@@ -1456,50 +1469,6 @@ class TIMU_SVG_Support {
 	}
 
 	/**
-	 * Enqueue admin JS for the SVG scan feature — only on our settings page.
-	 *
-	 * @param string $hook_suffix Current admin page hook suffix.
-	 */
-	public function enqueue_admin_assets( string $hook_suffix ): void {
-		if ( 'settings_page_thisismyurl-svg-support' !== $hook_suffix ) {
-			return;
-		}
-
-		$plugin_url = plugin_dir_url( __FILE__ );
-		$plugin_dir = plugin_dir_path( __FILE__ );
-		$js_path    = $plugin_dir . 'js/timu-svg-scan.js';
-
-		if ( ! file_exists( $js_path ) ) {
-			return;
-		}
-
-		wp_enqueue_script(
-			'timu-svg-scan',
-			$plugin_url . 'js/timu-svg-scan.js',
-			array( 'jquery' ),
-			'0.6174.1641',
-			true
-		);
-
-		wp_localize_script(
-			'timu-svg-scan',
-			'timuSvgScan',
-			array(
-				'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
-				'nonce'     => wp_create_nonce( 'timu_svg_scan_existing' ),
-				'i18n'      => array(
-					'scanning'  => __( 'Scanning…', 'thisismyurl-svg-support' ),
-					'done'      => __( 'Scan complete.', 'thisismyurl-svg-support' ),
-					'error'     => __( 'Request error. Check the browser console.', 'thisismyurl-svg-support' ),
-					'processed' => __( 'Processed', 'thisismyurl-svg-support' ),
-					'of'        => __( 'of', 'thisismyurl-svg-support' ),
-					'files'     => __( 'files', 'thisismyurl-svg-support' ),
-				),
-			)
-		);
-	}
-
-	/**
 	 * AJAX handler: retroactive sanitization scan.
 	 *
 	 * Processes 25 SVG attachments per request starting at the given offset.
@@ -1509,7 +1478,7 @@ class TIMU_SVG_Support {
 	 *   nonce  — wp_create_nonce( 'timu_svg_scan_existing' )
 	 *   offset — int, 0-based page start (default 0)
 	 */
-	public function ajax_scan_existing(): void {
+	public static function ajax_scan_existing(): void {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'thisismyurl-svg-support' ) ), 403 );
 		}
