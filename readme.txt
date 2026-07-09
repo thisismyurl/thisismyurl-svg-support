@@ -1,4 +1,4 @@
-=== - SVG Support by Christopher Ross ===
+=== SVG Support by Christopher Ross ===
 Contributors: thisismyurl
 Donate link: https://github.com/sponsors/thisismyurl
 Tags: svg, media library, sanitization, uploads, security
