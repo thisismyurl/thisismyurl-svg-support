@@ -320,4 +320,40 @@ jQuery( function ( $ ) {
         stopBusyIndicator();
         window.location.reload();
     } );
+
+    /* ── Vortops connection test ─────────────────────────────── */
+    $( '#btn-vortops-test-svg' ).on( 'click', function () {
+        var $btn    = $( this );
+        var $result = $( '#vortops-test-result-svg' );
+        var apiKey  = $( '#timu_vortops_api_key_svg' ).val().trim();
+        if ( ! apiKey ) {
+            $result.html( '<span style="color:#d63638;">&#10005; Enter an API key first.</span>' );
+            return;
+        }
+        $btn.prop( 'disabled', true ).text( 'Testing…' );
+        $result.html( '' );
+        $.ajax( {
+            url:      window.TIMUSvgSupportData.ajaxUrl,
+            method:   'POST',
+            dataType: 'json',
+            data: {
+                action:  window.TIMUSvgSupportData.actions.vortopsTest || 'timu_svg_vortops_test',
+                nonce:   window.TIMUSvgSupportData.nonce,
+                api_key: apiKey
+            }
+        } )
+        .done( function ( res ) {
+            if ( res && res.success ) {
+                $result.html( '<span style="color:#00a32a;">&#10003; ' + ( res.data && res.data.message ? res.data.message : 'Connected.' ) + '</span>' );
+            } else {
+                $result.html( '<span style="color:#d63638;">&#10005; ' + ( res && res.data ? res.data : 'Connection failed.' ) + '</span>' );
+            }
+        } )
+        .fail( function () {
+            $result.html( '<span style="color:#d63638;">&#10005; Request failed.</span>' );
+        } )
+        .always( function () {
+            $btn.prop( 'disabled', false ).text( 'Test connection' );
+        } );
+    } );
 } );

@@ -3,7 +3,7 @@
  * Plugin Name:       SVG Support by Christopher Ross
  * Plugin URI:        https://thisismyurl.com/thisismyurl-svg-support/
  * Description:       Safely enable SVG uploads in the WordPress Media Library with allowlist sanitization, MIME validation, per-role permissions, and a sandboxed admin preview.
- * Version:           1.6190.1530
+ * Version:           1.6190.1630
  * Requires at least: 6.0
  * Requires PHP:      8.1
  * Author:            Christopher Ross
@@ -22,12 +22,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'TIMU_SVG_VERSION' ) ) {
-	define( 'TIMU_SVG_VERSION', '1.6165.0822' );
+	define( 'TIMU_SVG_VERSION', '1.6190.1630' );
 }
 
 require_once __DIR__ . '/class-svg-sanitizer.php';
 require_once __DIR__ . '/includes/class-backup-adapter.php';
 require_once __DIR__ . '/abilities.php';
+require_once __DIR__ . '/includes/class-timu-vortops-client.php';
 
 /**
  * Main plugin controller.
@@ -114,6 +115,8 @@ class TIMU_SVG_Support {
 		add_action( 'wp_ajax_timu_svg_process_batch', array( __CLASS__, 'ajax_process_batch' ) );
 		add_action( 'wp_ajax_timu_svg_restore_single', array( __CLASS__, 'ajax_restore_single' ) );
 		add_action( 'wp_ajax_timu_svg_scan_existing', array( __CLASS__, 'ajax_scan_existing' ) );
+		add_action( 'admin_post_timu_svg_vortops_save', array( __CLASS__, 'handle_vortops_save' ) );
+		add_action( 'wp_ajax_timu_svg_vortops_test',    array( __CLASS__, 'ajax_vortops_test_connection' ) );
 		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( __CLASS__, 'add_plugin_action_links' ) );
 
 		// SVG upload + security core (preserved verbatim from the original plugin).
@@ -993,6 +996,46 @@ class TIMU_SVG_Support {
 	 *
 	 * @return void
 	 */
+	public static function handle_vortops_save() {
+		check_admin_referer( 'timu_svg_vortops_save', 'timu_svg_vortops_nonce' );
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'Unauthorized.', 'thisismyurl-svg-support' ) );
+		}
+		$api_key = isset( $_POST['timu_vortops_api_key'] )
+			? sanitize_text_field( wp_unslash( $_POST['timu_vortops_api_key'] ) )
+			: '';
+		if ( '' !== $api_key ) {
+			update_option( TIMU_Vortops_Client::OPTION_KEY, $api_key, false );
+		} else {
+			delete_option( TIMU_Vortops_Client::OPTION_KEY );
+		}
+		wp_safe_redirect( add_query_arg(
+			array( 'page' => 'svg-optimizer', 'tab' => 'settings', 'vortops-saved' => '1' ),
+			admin_url( 'tools.php' )
+		) );
+		exit;
+	}
+
+	public static function ajax_vortops_test_connection() {
+		check_ajax_referer( self::AJAX_NONCE_ACTION, 'nonce' );
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( __( 'Unauthorized.', 'thisismyurl-svg-support' ) );
+		}
+		$api_key = isset( $_POST['api_key'] )
+			? sanitize_text_field( wp_unslash( $_POST['api_key'] ) )
+			: '';
+		if ( '' === $api_key ) {
+			wp_send_json_error( __( 'Please enter an API key first.', 'thisismyurl-svg-support' ) );
+		}
+		$result = TIMU_Vortops_Client::ping_with_key( $api_key );
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( $result->get_error_message() );
+		}
+		wp_send_json_success( array(
+			'message' => __( 'Connected successfully. Save the settings to activate Vortops on this site.', 'thisismyurl-svg-support' ),
+		) );
+	}
+
 	public static function render_admin_page() {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( esc_html__( 'You do not have permission to access this page.', 'thisismyurl-svg-support' ) );
@@ -1028,8 +1071,9 @@ class TIMU_SVG_Support {
 					'ajaxUrl'    => admin_url( 'admin-ajax.php' ),
 					'nonce'      => wp_create_nonce( self::AJAX_NONCE_ACTION ),
 					'actions'    => array(
-						'batch'   => 'timu_svg_process_batch',
-						'restore' => 'timu_svg_restore_single',
+						'batch'       => 'timu_svg_process_batch',
+						'restore'     => 'timu_svg_restore_single',
+						'vortopsTest' => 'timu_svg_vortops_test',
 					),
 					'batchSize'  => self::get_batch_size_setting(),
 					'perPage'    => (int) $options['list_per_page'],
@@ -1348,6 +1392,58 @@ class TIMU_SVG_Support {
 									</table>
 
 									<?php submit_button( __( 'Save settings', 'thisismyurl-svg-support' ) ); ?>
+								</form>
+							</div>
+						</div>
+
+						<?php if ( isset( $_GET['vortops-saved'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
+						<div class="notice notice-success is-dismissible" style="margin:12px 0;"><p><?php esc_html_e( 'Vortops settings saved.', 'thisismyurl-svg-support' ); ?></p></div>
+						<?php endif; ?>
+						<div class="postbox" style="margin-top:12px;">
+							<h2 class="hndle"><span><?php esc_html_e( 'Cloud Services (Vortops)', 'thisismyurl-svg-support' ); ?></span></h2>
+							<div class="inside">
+								<?php if ( self::has_sanitizer() ) : ?>
+								<p><?php esc_html_e( 'SVG sanitization is working locally using the bundled library. Vortops is optional — connect an account if you want a cloud backup path for sanitization.', 'thisismyurl-svg-support' ); ?></p>
+								<?php else : ?>
+								<div class="notice notice-warning inline" style="padding:8px 12px;margin-bottom:12px;">
+									<p><?php esc_html_e( "The local SVG sanitizer library is unavailable — SVG uploads are currently blocked. This is a server or installation issue, not a plugin restriction. Connecting a Vortops account enables cloud SVG sanitization as an alternative.", 'thisismyurl-svg-support' ); ?></p>
+								</div>
+								<?php endif; ?>
+								<?php if ( TIMU_Vortops_Client::is_connected() ) : ?>
+								<div class="notice notice-success inline" style="padding:8px 12px;margin-bottom:12px;">
+									<p><?php esc_html_e( 'Vortops is connected. Cloud SVG sanitization is available as a fallback.', 'thisismyurl-svg-support' ); ?></p>
+								</div>
+								<?php endif; ?>
+								<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+									<input type="hidden" name="action" value="timu_svg_vortops_save" />
+									<?php wp_nonce_field( 'timu_svg_vortops_save', 'timu_svg_vortops_nonce' ); ?>
+									<table class="form-table" role="presentation">
+										<tr>
+											<th scope="row"><label for="timu_vortops_api_key_svg"><?php esc_html_e( 'API key', 'thisismyurl-svg-support' ); ?></label></th>
+											<td>
+												<input type="password"
+													   id="timu_vortops_api_key_svg"
+													   name="timu_vortops_api_key"
+													   value="<?php echo esc_attr( TIMU_Vortops_Client::get_api_key() ); ?>"
+													   class="regular-text"
+													   placeholder="<?php esc_attr_e( 'Paste your Vortops API key', 'thisismyurl-svg-support' ); ?>" />
+												<button type="button" id="btn-vortops-test-svg" class="button" style="margin-left:6px;">
+													<?php esc_html_e( 'Test connection', 'thisismyurl-svg-support' ); ?>
+												</button>
+												<div id="vortops-test-result-svg" style="margin-top:6px;min-height:20px;"></div>
+												<p class="description">
+													<?php
+													printf(
+														/* translators: %s: link to vortops.com */
+														esc_html__( 'Get a free API key at %s. The key is shared across all thisismyurl plugins — connecting once covers all of them.', 'thisismyurl-svg-support' ),
+														'<a href="https://vortops.com" target="_blank" rel="noopener noreferrer">vortops.com</a>'
+													);
+													?>
+												</p>
+											</td>
+										</tr>
+									</table>
+									<?php submit_button( __( 'Save Vortops settings', 'thisismyurl-svg-support' ), 'secondary' ); ?>
 								</form>
 							</div>
 						</div>

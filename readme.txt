@@ -5,7 +5,7 @@ Tags: svg, media library, sanitization, uploads, security
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 8.1
-Stable tag: 1.6190.1530
+Stable tag: 1.6190.1630
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Plugin URI: https://thisismyurl.com/thisismyurl-svg-support/
@@ -68,6 +68,11 @@ It lives in the `timu_svg_failure_log` option. Inspect it with WP-CLI:
 `wp option get timu_svg_failure_log --format=json`
 
 == Changelog ==
+
+= 1.6190.1630 =
+* **New:** Vortops cloud services section in Settings — if the local SVG sanitizer library is unavailable, connecting a Vortops account enables cloud SVG sanitization as a complete alternative. Local sanitization is always preferred.
+* **New:** Test connection button for Vortops API key. The key is shared across all thisismyurl plugins.
+* **Fix:** Version constant `TIMU_SVG_VERSION` was out of sync with the plugin header (stuck at 1.6165.0822); corrected to match the current version.
 
 = 1.6190.1530 =
 * **Fix:** Resolved fatal "Cannot redeclare TIMU_SVG_Support::enqueue_admin_assets()" from a merge collision between two hook-registration approaches; dead `register_hooks()` instance method removed, surviving static path wired correctly.

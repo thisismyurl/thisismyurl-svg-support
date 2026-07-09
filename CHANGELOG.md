@@ -5,6 +5,16 @@ All notable changes to this plugin are documented here. The format follows
 the `x.Yddd` versioning scheme (`x` = release class, `Y` = year last digit,
 `ddd` = Julian day).
 
+## 1.6190.1630 — 2026-07-09
+
+### Added
+- **Vortops cloud SVG sanitization** — if the local `enshrined/svg-sanitize` library is unavailable, connecting a Vortops API key enables cloud SVG sanitization as a fallback. Local sanitization is always preferred; Vortops is the fallback, not the default.
+- Vortops Settings postbox with API key field, test-connection button, and honest capability messaging (different text when local sanitizer is vs. isn't available).
+- `TIMU_Vortops_Client` shared client class (`includes/class-timu-vortops-client.php`).
+
+### Fixed
+- `TIMU_SVG_VERSION` constant was out of sync with the plugin header (was `1.6165.0822`); corrected to `1.6190.1630`.
+
 ## [1.6190.1530] — 2026-07-09
 
 ### Fixed
