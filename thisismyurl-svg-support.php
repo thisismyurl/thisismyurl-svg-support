@@ -1149,7 +1149,7 @@ class TIMU_SVG_Support {
 								<p><?php esc_html_e( 'Enables SVG uploads and sanitizes each one with the hardened allowlist sanitizer (enshrined/svg-sanitize), stripping scripts, event handlers, and remote references, then minifies the markup to cut file weight. Originals are backed up and can be restored at any time.', 'thisismyurl-svg-support' ); ?></p>
 								<?php if ( ! empty( $restorable ) ) : ?>
 									<hr />
-									<p><strong><?php esc_html_e( 'Bulk actions', 'thisismyurl-svg-support' ); ?></strong></p>
+									<p><strong><?php esc_html_e( 'Bulk Actions', 'thisismyurl-svg-support' ); ?></strong></p>
 									<button id="btn-restore-all" class="button button-secondary" style="width:100%;text-align:center;" data-ids="<?php echo esc_attr( wp_json_encode( $restorable ) ); ?>">
 										<?php esc_html_e( 'Restore all originals', 'thisismyurl-svg-support' ); ?>
 									</button>
