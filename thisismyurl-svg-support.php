@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       - SVG Support by Christopher Ross
+ * Plugin Name:       SVG Support by Christopher Ross
  * Plugin URI:        https://thisismyurl.com/thisismyurl-svg-support/
  * Description:       Safely enable SVG uploads, then sanitize and minify them in place — allowlist sanitization (enshrined/svg-sanitize), MIME validation, per-role permissions, backups, and one-click restore.
  * Version:           1.6165.0822
@@ -13,9 +13,6 @@
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       thisismyurl-svg-support
  * Domain Path:       /languages
- * Update URI:        https://github.com/thisismyurl/thisismyurl-svg-support
- * GitHub Plugin URI: https://github.com/thisismyurl/thisismyurl-svg-support
- * Primary Branch:    main
  *
  * The release process stamps the real X.Yddd.hhmm (Toronto) value into the
  * Version: header above, the TIMU_SVG_VERSION constant, and readme.txt Stable
